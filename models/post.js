@@ -6,10 +6,6 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    tags: {
-      type: Array,
-      default: [],
-    },
     viewsCount: {
       type: Number,
       default: 0,
@@ -19,6 +15,7 @@ const PostSchema = new mongoose.Schema(
       ref: 'user',
       required: true,
     },
+    comments: [{ user: mongoose.Schema.Types.ObjectId, text: String }],
     avatarUrl: String,
     imgUrl: String,
   },

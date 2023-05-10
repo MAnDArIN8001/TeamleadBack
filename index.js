@@ -47,7 +47,7 @@ app.post(
   handleValidationErrors,
   UserController.logIn
 );
-app.post('/auth/logout', checkAuth, UserController.logOut);
+app.post('/auth/logout', UserController.logOut);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
@@ -64,6 +64,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 
 app.post('/photos/post', checkAuth, UserController.uploadPhoto);
 
+app.get('/user/photo/:id', UserController.getPhoto);
 app.post('/user/photo', checkAuth, UserController.changePhoto);
 app.post('/users', checkAuth, FriendController.findByName);
 app.get('/users/:id', UserController.getUser);
@@ -89,6 +90,8 @@ app.patch(
   handleValidationErrors,
   PostController.update
 );
+
+app.patch('/post/add/comment', checkAuth, PostController.addComment);
 app.get('/posts/:id', PostController.getAllWithId);
 
 app.listen(4444, err => {

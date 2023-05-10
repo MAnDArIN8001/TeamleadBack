@@ -15,6 +15,6 @@ export default (req, res, next) => {
       return res.status(403).json({ message: 'no way' });
     }
   } else {
-    return res.status(403).json({ message: 'something was wrong' });
+    return res.status(403).json({ message: 'we didnt get token' });
   }
 };

@@ -16,7 +16,6 @@ export const register = async (req, res) => {
       passwordHash: hash,
       avatarUrl: '',
       friends: [],
-      groups: [],
       isAuth: false,
     });
 
@@ -28,7 +27,7 @@ export const register = async (req, res) => {
       },
       'secret123',
       {
-        expiresIn: '30d',
+        expiresIn: '60d',
       }
     );
 
@@ -112,8 +111,7 @@ export const logIn = async (req, res) => {
 
 export const logOut = async (req, res) => {
   try {
-    console.log(req.body.email);
-
+    console.log(req.body, 'yes');
     await User.updateOne({ _id: req.userId }, { isAuth: false });
 
     req.userId = null;
@@ -162,9 +160,9 @@ export const getUser = async (req, res) => {
 
 export const changePhoto = async (req, res) => {
   try {
-    await User.findOneAndUpdate(
+    User.findOneAndUpdate(
       {
-        _id: req.userId,
+        _id: req.body.id,
       },
       {
         avatarUrl: req.body.avatarUrl,
@@ -187,7 +185,7 @@ export const changePhoto = async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'server error' });
+    return res.status(500).json({ message: 'server ' });
   }
 };
 
@@ -209,5 +207,19 @@ export const uploadPhoto = async (req, res) => {
     const newPicture = doc.save();
 
     res.json({ sucses: true });
-  } catch (error) {}
+  } catch (error) {
+    res.status(404).json({ message: 'something was wrong' });
+  }
+};
+
+export const getPhoto = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const { avatarUrl } = await User.findById({ _id: id });
+
+    res.status(200).json(avatarUrl);
+  } catch (error) {
+    res.status(404).json({ message: 'something was wrong' });
+  }
 };

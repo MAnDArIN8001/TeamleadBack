@@ -9,10 +9,10 @@ export const create = async (req, res) => {
 
     const doc = new post({
       text: req.body.text,
-      tags: req.body.tags,
       imageUrl: req.body.imageUrl,
       user: req.userId,
       avatarUrl: auther.avatarUrl,
+      comments: [],
     });
 
     const newPost = await doc.save();
@@ -131,5 +131,30 @@ export const getOne = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'impossible to connect' });
+  }
+};
+
+export const addComment = async (req, res) => {
+  try {
+    const postId = req.body.id;
+    const currentPost = await post.findById(postId);
+
+    const newComment = { user: req.body.user, text: req.body.text };
+
+    console.log(req.body);
+
+    await post.updateOne(
+      {
+        _id: postId,
+      },
+      {
+        comments: [...currentPost?.comments, newComment],
+      }
+    );
+
+    return res.status(200).json({ message: 'ok' });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: 'Server error' });
   }
 };
