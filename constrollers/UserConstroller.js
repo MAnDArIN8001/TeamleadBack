@@ -6,6 +6,8 @@ import Picture from '../models/picture.js';
 
 export const register = async (req, res) => {
   try {
+    console.log(res.body);
+
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -38,8 +40,8 @@ export const register = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'impossible to connect' });
+    console.log(error.message);
+    res.status(500).json({ message: 'This mail is alredy used' });
   }
 };
 
@@ -111,7 +113,6 @@ export const logIn = async (req, res) => {
 
 export const logOut = async (req, res) => {
   try {
-    console.log(req.body, 'yes');
     await User.updateOne({ _id: req.userId }, { isAuth: false });
 
     req.userId = null;

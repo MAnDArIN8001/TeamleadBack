@@ -82,7 +82,7 @@ app.post(
   handleValidationErrors,
   PostController.create
 );
-app.delete('/post/:id', checkAuth, PostController.remove);
+app.delete('/post/delete', PostController.remove);
 app.patch(
   '/post/:id',
   checkAuth,

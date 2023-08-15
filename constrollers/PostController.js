@@ -26,7 +26,9 @@ export const create = async (req, res) => {
 
 export const remove = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const postId = req.body.id;
+
+    console.log(postId);
 
     post.findOneAndDelete(
       {
